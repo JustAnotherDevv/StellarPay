@@ -43,17 +43,17 @@ export function Header() {
   };
 
   return (
-    <header className="bg-gray-900 text-primary-foreground py-4">
-      <div className="container mx-auto px-4 flex justify-between items-center">
+    <header className="bg-gray-900 text-primary-foreground py-4 w-screen">
+      <div className="container mx-auto px-4 flex justify-between items-center w-screen">
         <div className="flex justify-around gap-2 items-center">
           <img
             className="w-14 h-14 overflow-hidden rounded-full"
             src="/logo.png"
             alt=""
           />
-          <h1 className="text-3xl font-bold">Stellar Pay</h1>
+          <h1 className="text-3xl font-bold">SplitPay</h1>
         </div>
-        <nav>
+        <nav className="invisible md:visible">
           <ul className="invisible md:visible flex gap-2">
             <li className="">
               <Link
