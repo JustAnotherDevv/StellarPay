@@ -70,10 +70,10 @@ The app’s streamlined process allows users to split expenses and execute payme
 ## Features
 
 - Payment Splitting (By Full, By Item, Evenly)
-- Lending and Borrowing Opportunity
-- Creating groups
-- Receipt OCR system
-- Simple and intuitive UI thanks to Passkeys integration
+- Lending and Borrowing Compatibility
+- Creating Groups/Expenses
+- Receipt OCR system to extract the specific costs
+- Simple and intuitive UI thanks to Passkeys Integration
   
 ## Tech Stack
 
