@@ -2,7 +2,7 @@
 
 <p align="center">
 <br />
-    <img src="[https://github.com/JustAnotherDevv/StellarPay.git/public/logo.png" width="400" alt=""/>
+    <img src="https://github.com/JustAnotherDevv/StellarPay.git/public/logo.png" width="400" alt=""/>
 <br />
 </p>
 <p align="center"><strong style="font-size: 24px;">Group Splitting Payment App.</strong></p>
@@ -15,6 +15,8 @@
         </a>
     </span>
 </p>
+
+---
 
 Make group payments faster, and effortless, and delay worries about extending funds with just a few clicks. 
 
@@ -80,7 +82,7 @@ The app’s streamlined process allows users to split expenses and execute payme
 - **Web3** - Stellar + Soroban smart contracts
 - **Auth** - Passkeys / Freigther
 
-### Getting Started
+## Getting Started
 
 - Install dependenciex - `pnpm i`
 - Build smart Soroban smart contracts and deploy to chosen network(optional)
