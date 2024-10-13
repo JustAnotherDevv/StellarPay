@@ -2,7 +2,7 @@
 
 <p align="center">
 <br />
-    <img src="https://github.com/public/logo.png" width="400" alt=""/>
+    <img src="[https://github.com/JustAnotherDevv/StellarPay.git/public/logo.png" width="400" alt=""/>
 <br />
 </p>
 <p align="center"><strong style="font-size: 24px;">Group Splitting Payment App.</strong></p>
@@ -45,7 +45,7 @@ graph TD
 
 ### Links
 
-- [Live Demo](https://www.youtube.com/watch?v=EyXrEwHLkoo](https://www.youtube.com/watch?v=EyXrEwHLkoo)
+- [Live Demo](https://www.youtube.com/watch?v=EyXrEwHLkoo)
 - [Pitch Deck](https://www.canva.com/design/DAGTabHuIc4/BDLopYPbazWElCHx-Q-Z7A/edit?utm_content=DAGTabHuIc4&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
 )
 - Video
