@@ -16,7 +16,7 @@ const Logo = () => (
       src="/logo.png"
       alt=""
     />
-    <h1 className="text-3xl font-bold ml-2">SplitPay</h1>
+    <h1 className="text-3xl font-bold ml-2">SplitterTab</h1>
   </div>
 );
 

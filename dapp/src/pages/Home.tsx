@@ -14,9 +14,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useStellarWallets } from "@/context/StellarWalletsContext";
 import { ISupportedWallet } from "@creit.tech/stellar-wallets-kit";
-import { truncateStr } from "@/utils";
+import { contractRead, truncateStr } from "@/utils";
 // import { useMediaQuery } from "react-responsive";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useAuth } from "@/hooks/use-auth";
+import { nativeToScVal, scValToNative } from "@stellar/stellar-sdk";
 const MotionCard = motion(Card);
 // const MotionButton = motion(Button);
 
@@ -25,6 +27,16 @@ const PaymentSplitterBanner = () => {
   const [userName, setUserName] = useState("");
   const [stellarAddress, setStellarAddress] = useState("");
   const stellarWalletsKit = useStellarWallets();
+  const {
+    isAuthenticated,
+    connection,
+    userAddress,
+    bundlerKey,
+    register,
+    signIn,
+    signOut,
+    initializeBundler,
+  } = useAuth();
 
   const menuItems = [
     { icon: Plus, label: "New Split" },
@@ -63,6 +75,39 @@ const PaymentSplitterBanner = () => {
     },
   ];
 
+  const fetchGroupById = async (id = 0) => {
+    const formattedAddress = nativeToScVal("0", { type: "symbol" });
+
+    const name = await contractRead(bundlerKey, "get_group", [
+      formattedAddress,
+    ]);
+    const decodedName = scValToNative(name.result?.retval!);
+    console.log("name ", name, " ", decodedName);
+  };
+
+  useEffect(() => {
+    initializeBundler();
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      if (!bundlerKey) return;
+      const formattedAddress = nativeToScVal(
+        "GAIKTILDUD5TXL2FY5F4RAPDTTLUVKIOW3YA3WXKQM5RBEFLSUPZIMCE",
+        { type: "address" }
+      );
+
+      const name = await contractRead(bundlerKey, "get_member", [
+        formattedAddress,
+      ]);
+      const decodedName = scValToNative(name.result?.retval!);
+      console.log("name ", name, " ", decodedName);
+      setUserName(decodedName.nickname);
+
+      await fetchGroupById();
+    })();
+  }, [isAuthenticated]);
+
   useEffect(() => {
     (async () => {
       const { address } = await stellarWalletsKit.getAddress();
@@ -72,9 +117,9 @@ const PaymentSplitterBanner = () => {
     })();
   }, []);
 
-  useEffect(() => {
-    setTimeout(() => setUserName("Alex"), 1000);
-  }, []);
+  //   useEffect(() => {
+  //     setTimeout(() => setUserName("Alex"), 1000);
+  //   }, []);
 
   const handleConnect = async () => {
     try {
@@ -134,7 +179,7 @@ const PaymentSplitterBanner = () => {
               transition={{ duration: 0.5 }}
             >
               {/* Welcome to SplitPay */}
-              GM Jack
+              GM {userName}
             </motion.h1>
             <motion.p
               className="text-xl text-gray-400"
@@ -178,8 +223,10 @@ const PaymentSplitterBanner = () => {
                       <AvatarFallback>JD</AvatarFallback>
                     </Avatar>
                     <div className="text-center sm:text-left">
-                      <h2 className="text-xl font-semibold">Jack Doe</h2>
-                      <p className="text-gray-400">@jack_doe</p>
+                      <h2 className="text-xl font-semibold">@{userName}</h2>
+                      <p className="text-gray-400">
+                        {truncateStr(userAddress, 5)}
+                      </p>
                     </div>
                   </div>
                   <div className="flex flex-col space-y-2 items-center sm:items-end">
@@ -187,7 +234,7 @@ const PaymentSplitterBanner = () => {
                       <Users className="h-5 w-5 text-gray-400" />
                       <span className="text-lg font-medium">5 Groups</span>
                     </div>
-                    <Button
+                    {/* <Button
                       variant="outline"
                       className="w-full sm:w-auto text-gray-800"
                       onClick={handleConnect}
@@ -196,7 +243,26 @@ const PaymentSplitterBanner = () => {
                       {stellarAddress === ""
                         ? "Connect Wallet"
                         : truncateStr(stellarAddress, 5)}
+                    </Button> */}
+                    <Button
+                      variant="outline"
+                      className="w-full sm:w-auto text-gray-800"
+                      onClick={() => {
+                        console.log("sds");
+                        if (!userAddress) {
+                          signIn();
+                        } else {
+                          console.log("signing out");
+                          signOut();
+                        }
+                      }}
+                    >
+                      <Wallet className="mr-2 h-4 w-4" />
+                      {!isAuthenticated && !userAddress
+                        ? "Connect Wallet"
+                        : truncateStr(userAddress, 5)}
                     </Button>
+                    {isAuthenticated.toString()}
                   </div>
                 </div>
               </CardContent>
