@@ -1,0 +1,22 @@
+stellar keys generate --global alice --network testnet
+ 
+stellar keys address admin (to see the key):
+GCI3JTWP25EPIRNFVHBZPK2JYISMMWWBWGXQS4PJSBBEMYX4BYPK2CPO
+
+stellar contract invoke \
+  --id CBNO2EP5OLDLBSQ6ZBVUY4U4VMFTP7SMTGVQ2FMSNMEY5AUZEJKQYYFK \
+  --source admin \
+  --network testnet \
+  -- \
+  init \
+  --pk eb58656ce37f7910da94506be0db06befdce032b1605d0f6fc2ccd2e79322d0a
+
+  stellar contract deploy \
+  --wasm target/wasm32-unknown-unknown/release/contracts.wasm \
+  --source admin \
+  --network testnet
+
+stellar network add \
+  --global testnet \
+  --rpc-url https://soroban-testnet.stellar.org:443 \
+  --network-passphrase "Test SDF Network ; September 2015"
