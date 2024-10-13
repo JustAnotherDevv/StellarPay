@@ -55,7 +55,7 @@ const SoroPass: React.FC = () => {
       setDots(prev => prev.length === 3 ? "" : prev + ".");
     }, 500);
 
-    const voteInterval = setInterval(() => onVotes(), 25000);
+    const voteInterval = setInterval(() => onVotes(), 1500);
 
     if (localStorage.hasOwnProperty("sp:bundler")) {
       setBundlerKey(Keypair.fromSecret(localStorage.getItem("sp:bundler")!));
@@ -167,9 +167,10 @@ const SoroPass: React.FC = () => {
         userVerification: "discouraged",
       });
 
-      await handleVoteSend(bundlerKey!, authTxn, lastLedger, signRes);
+      const respone = await handleVoteSend(bundlerKey!, authTxn, lastLedger, signRes);
       await onVotes();
       setStep(prev => prev + 1);
+      console.log("Vote sent", respone, "Signature", signRes);
     } catch (error) {
       console.error(error);
       alert(JSON.stringify(error));
@@ -297,16 +298,13 @@ const SoroPass: React.FC = () => {
           >
             <h1 className="text-4xl font-bold mb-4">Welcome!</h1>
             <p className="mb-4">Split is a fun and secure way to vote using blockchain technology.</p>
-            <button onClick={() => goLeft()} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-5 rounded">
-        
-      </button>
             <button
               onClick={() => setStep(2)}
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
             >
               Get Started
             </button>
-            <button onClick={() => goRight()} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-5 rounded"></button>
+            
 
           </motion.div>
         )}
@@ -339,9 +337,15 @@ const SoroPass: React.FC = () => {
           </motion.div>
         )}
 
-
       </AnimatePresence>
-    </div>
+      <button onClick={onSign} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+        Sign
+      </button>
+      <button onClick={() => goLeft()} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-5 rounded">
+      ⬅️
+      </button>
+      <button onClick={() => goRight()} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-5 rounded">➡️</button></div>
+      
   );
 };
 
