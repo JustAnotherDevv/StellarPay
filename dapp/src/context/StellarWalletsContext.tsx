@@ -39,14 +39,14 @@ export const useStellarWallets = () => {
 
 // Example usage in a component:
 const ExampleComponent: React.FC = () => {
-  const stellarWalletsKit = useStellarWallets();
+  //   const stellarWalletsKit = useStellarWallets();
 
   const handleConnect = async () => {
     try {
       await kit.openModal({
         onWalletSelected: async (option: ISupportedWallet) => {
           kit.setWallet(option.id);
-          const { address } = await kit.getAddress();
+          //   const { address } = await kit.getAddress();
         },
       });
     } catch (error) {

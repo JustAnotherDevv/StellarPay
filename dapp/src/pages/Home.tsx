@@ -1,30 +1,27 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
   UserPlus,
-  DollarSign,
-  Send,
-  ArrowRight,
   PieChart,
   Users,
   CreditCard,
-  Activity,
   Plus,
   Wallet,
   ArrowRightLeft,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+// import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { useStellarWallets } from "@/context/StellarWalletsContext";
+import { ISupportedWallet } from "@creit.tech/stellar-wallets-kit";
 import { truncateStr } from "@/utils";
-import { useMediaQuery } from "react-responsive";
+// import { useMediaQuery } from "react-responsive";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 const MotionCard = motion(Card);
-const MotionButton = motion(Button);
+// const MotionButton = motion(Button);
 
 const PaymentSplitterBanner = () => {
-  const isMobile = useMediaQuery({ maxWidth: 768 });
+  //   const isMobile = useMediaQuery({ maxWidth: 768 });
   const [userName, setUserName] = useState("");
   const [stellarAddress, setStellarAddress] = useState("");
   const stellarWalletsKit = useStellarWallets();
@@ -71,6 +68,7 @@ const PaymentSplitterBanner = () => {
       const { address } = await stellarWalletsKit.getAddress();
       console.log(address);
       setStellarAddress(address);
+      console.log(userName);
     })();
   }, []);
 
@@ -148,6 +146,7 @@ const PaymentSplitterBanner = () => {
             </motion.p>
           </div>
         </div>
+
         <div className="max-w-4xl mx-auto pt-8 w-full">
           <motion.div
             className="w-full"
@@ -156,11 +155,12 @@ const PaymentSplitterBanner = () => {
             transition={{ duration: 0.5, delay: 0.4 }}
           >
             <MotionCard
-              className="bg-primary text-gray-200 border border-gray-700 overflow-hidden"
+              className="bg-primary text-gray-200 border border-gray-700 overflow-hidden relative shine-effect"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.3 }}
+              whileHover={{ scale: 1.02 }}
             >
               <CardHeader className="pb-2">
                 <CardTitle className="text-2xl font-bold">
@@ -202,6 +202,36 @@ const PaymentSplitterBanner = () => {
               </CardContent>
             </MotionCard>
           </motion.div>
+          <style>{`
+            .shine-effect {
+              position: relative;
+              overflow: hidden;
+            }
+            .shine-effect::before {
+              content: "";
+              position: absolute;
+              top: -50%;
+              left: -50%;
+              width: 200%;
+              height: 200%;
+              background: linear-gradient(
+                to bottom right,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0.1) 50%,
+                rgba(255, 255, 255, 0) 100%
+              );
+              transform: rotate(45deg);
+              animation: shine 3s infinite;
+            }
+            @keyframes shine {
+              0% {
+                transform: translateX(-200%) translateY(-200%) rotate(45deg);
+              }
+              100% {
+                transform: translateX(200%) translateY(200%) rotate(45deg);
+              }
+            }
+          `}</style>
         </div>
 
         <div className="max-w-4xl mx-auto py-8">

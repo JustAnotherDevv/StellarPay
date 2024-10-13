@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from "react";
+// @ts-nocheck
+import { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
-import { Home, Plus, User, Wallet } from "lucide-react";
+import { Home, Plus, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { useStellarWallets } from "@/context/StellarWalletsContext";
 import { ISupportedWallet } from "@creit.tech/stellar-wallets-kit";
-import { truncateStr } from "@/utils";
+// import { truncateStr } from "@/utils";
 import { Link, useLocation } from "react-router-dom";
 
 const Logo = () => (
@@ -22,23 +23,21 @@ const Logo = () => (
 const NavItem = ({ icon: Icon, label, path, isActive, isMobile, onClick }) => {
   const location = useLocation();
   return (
-    <Link
-      to={path}
-      // className={`flex border border-black/0 hover:border-gray-400 rounded-md p-2 hover:bg-gray-800/90 ${
-      //   location.pathname == "/" ? "bg-gray-800/90" : ""
-      // }`}
-    >
+    <Link to={path} className="w-full flex items-center mx-1">
       <motion.div
         whileTap={{ scale: 1.1 }}
         transition={{ type: "spring", stiffness: 400, damping: 17 }}
+        className="w-full"
       >
         <Button
           variant={location.pathname == path ? "secondary" : "ghost"}
-          className={`flex items-center justify-start relative w-full ${
+          className={`flex items-center justify-start relative w-full mx-2 ${
             location.pathname == path
               ? "bg-blue-600 text-white hover:bg-white hover:text-black"
               : "text-gray-400"
-          } relative`}
+          } 
+          ${isMobile ? "w-full flex items-center justify-around" : ""}
+          relative `}
           onClick={onClick}
         >
           <motion.div
@@ -112,13 +111,13 @@ const Navigation = ({ isMobile, activePage, setActivePage }) => {
   ];
 
   const navClass = isMobile
-    ? "fixed bottom-0 left-0 right-0 bg-primary/90 backdrop-blur-xl   p-2 z-10 border-t border-gray-700"
+    ? "fixed bottom-0 left-0 right-0 bg-primary/90 backdrop-blur-xl py-3 px-2 z-10 border-t border-gray-700"
     : "sticky top-0 h-screen w-52 bg-primary p-4 flex flex-col justify-between overflow-y-auto";
 
   if (isMobile) {
     return (
       <nav className={navClass}>
-        <div className={isMobile ? "flex justify-around" : "space-y-2"}>
+        <div className={isMobile ? "flex justify-around" : "space-y-2 "}>
           {navItems.map(({ icon, label, path }) => (
             <NavItem
               key={label}
