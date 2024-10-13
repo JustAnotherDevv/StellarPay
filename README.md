@@ -62,11 +62,16 @@ The app’s streamlined process allows users to split expenses and execute payme
 
 ### Images
 
+<img width="1728" alt="Screenshot 2024-10-13 at 11 50 51" src="https://github.com/user-attachments/assets/3577fe7d-3677-4736-b71b-48b428ea3a70">
+
 <img width="1728" alt="image" src="https://github.com/user-attachments/assets/6ae7d45f-e28d-47da-af84-02fe3f3ce967">
 
 <img width="1728" alt="image" src="https://github.com/user-attachments/assets/d7585a3a-dd8e-45ef-83d6-75919dfd2747">
 
 <img width="1728" alt="image" src="https://github.com/user-attachments/assets/7dfc9f20-2144-4d6d-a1ce-8aff8e76d929">
+
+<img width="1728" alt="Screenshot 2024-10-13 at 11 53 27" src="https://github.com/user-attachments/assets/e800d840-7844-46ff-a3f8-89d0e766c4e8">
+
 
 ## Features
 
