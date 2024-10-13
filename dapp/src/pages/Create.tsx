@@ -19,6 +19,8 @@ import {
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { motion, AnimatePresence } from "framer-motion";
+import { uploadImageToInfura } from "@/utils";
 
 type Expense = {
   id: number;
@@ -32,6 +34,9 @@ type Participant = {
   name: string;
 };
 
+const MotionCard = motion(Card);
+const MotionButton = motion(Button);
+
 export default function Create() {
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [participants, setParticipants] = useState<Participant[]>([]);
@@ -43,6 +48,7 @@ export default function Create() {
   const [newParticipant, setNewParticipant] = useState("");
   const [splitType, setSplitType] = useState("manual");
   const [totalAmount, setTotalAmount] = useState(0);
+  const [ipfsCid, setIpfsCid] = useState(null);
   const [receiptImage, setReceiptImage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
@@ -150,20 +156,88 @@ export default function Create() {
     });
   };
 
-  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
+  const handleImageUpload = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    if (!event?.target?.files) return null;
+    const file = event?.target?.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setReceiptImage(reader.result as string);
-      };
-      reader.readAsDataURL(file);
+      try {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setReceiptImage(reader.result as string);
+        };
+        reader.readAsDataURL(file);
+
+        const ipfsHash = await uploadImageToInfura(file);
+        console.log("IPFS Hash:", ipfsHash);
+        setIpfsCid(ipfsHash);
+        console.log(ipfsCid);
+      } catch (error) {
+        console.error("Upload failed:", error);
+      }
     }
   };
 
   return (
-    <div className="space-y-8 px-4 py-4 mx-auto md:w-1/2">
-      <Card className="bg-primary text-gray-200 border border-gray-700">
+    <motion.div
+      className="space-y-8 px-4 py-4 mx-auto md:w-1/2"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+    >
+      <div
+        className="relative h-40 bg-primary overflow-hidden rounded-md border border-gray-700"
+        style={{
+          position: "relative",
+          isolation: "isolate",
+        }}
+      >
+        <div
+          style={{
+            content: '""',
+            position: "absolute",
+            inset: 0,
+            backgroundImage: 'url("/bg-2.jpg")',
+            // backgroundSize: "100px",
+            // backgroundRepeat: "repeat",
+            opacity: 0.3,
+            zIndex: -1,
+          }}
+        />
+        <motion.div
+          className="absolute inset-0 bg-gray-800"
+          animate={{
+            backgroundPosition: ["0% 0%", "100% 100%"],
+            opacity: [0.2, 0.3],
+          }}
+        />
+        <div className="relative z-10 h-full flex flex-col justify-center items-center text-center p-6">
+          <motion.h1
+            className="text-4xl font-bold mb-2 text-gray-200"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            New Group
+          </motion.h1>
+          <motion.p
+            className="text-xl text-gray-400"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            Split expenses, not friendships! 💸🤝
+          </motion.p>
+        </div>
+      </div>
+      <MotionCard
+        className="bg-primary text-gray-200 border border-gray-700 overflow-hidden relative shine-effect"
+        initial={{ y: -20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.2, duration: 0.5 }}
+        whileHover={{ scale: 1.02 }}
+      >
         <CardHeader>
           <CardTitle>Add Participants</CardTitle>
         </CardHeader>
@@ -174,28 +248,78 @@ export default function Create() {
               value={newParticipant}
               onChange={(e) => setNewParticipant(e.target.value)}
             />
-            <Button
+            <MotionButton
               variant="outline"
               className="mt-auto text-gray-800"
               onClick={addParticipant}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
               Add
-            </Button>
+            </MotionButton>
           </div>
-          <div className="mt-4 flex flex-wrap gap-2">
-            {participants.map((participant) => (
-              <div
-                key={participant.id}
-                className="bg-secondary text-secondary-foreground px-3 py-1 rounded-md text-sm"
-              >
-                {participant.name}
-              </div>
-            ))}
-          </div>
+          <motion.div
+            className="mt-4 flex flex-wrap gap-2"
+            initial="hidden"
+            animate="visible"
+            variants={{
+              visible: { transition: { staggerChildren: 0.1 } },
+            }}
+          >
+            <AnimatePresence>
+              {participants.map((participant) => (
+                <motion.div
+                  key={participant.id}
+                  className="bg-secondary text-secondary-foreground px-3 py-1 rounded-md text-sm"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  {participant.name}
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </motion.div>
         </CardContent>
-      </Card>
+        <style>{`
+          .shine-effect {
+            position: relative;
+            overflow: hidden;
+          }
+          .shine-effect::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+              to bottom right,
+              rgba(255, 255, 255, 0) 0%,
+              rgba(255, 255, 255, 0.1) 50%,
+              rgba(255, 255, 255, 0) 100%
+            );
+            transform: rotate(45deg);
+            animation: shine 3s infinite;
+          }
+          @keyframes shine {
+            0% {
+              transform: translateX(-200%) translateY(-200%) rotate(45deg);
+            }
+            100% {
+              transform: translateX(200%) translateY(200%) rotate(45deg);
+            }
+          }
+        `}</style>
+      </MotionCard>
 
-      <Card className="bg-primary text-gray-200 border border-gray-700">
+      <MotionCard
+        className="bg-primary text-gray-200 border border-gray-700"
+        initial={{ y: -20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.4, duration: 0.5 }}
+      >
         <CardHeader>
           <CardTitle>Expense Details</CardTitle>
         </CardHeader>
@@ -332,9 +456,14 @@ export default function Create() {
           )}
 
           {splitType === "manual" && (
-            <Button onClick={addExpense} className="w-full">
+            <MotionButton
+              onClick={addExpense}
+              className="w-full"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
               <PlusCircle className="mr-2 h-4 w-4" /> Add Expense
-            </Button>
+            </MotionButton>
           )}
 
           <div className="space-y-2">
@@ -348,13 +477,15 @@ export default function Create() {
                 className="hidden"
                 ref={fileInputRef}
               />
-              <Button
+              <MotionButton
                 onClick={() => fileInputRef.current?.click()}
                 variant="outline"
                 className="text-gray-700"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
               >
                 <Upload className="mr-2 h-4 w-4" /> Upload Image
-              </Button>
+              </MotionButton>
               {receiptImage && (
                 <span className="text-sm text-muted-foreground">
                   Image uploaded
@@ -375,36 +506,56 @@ export default function Create() {
         </CardContent>
         {splitType === "manual" && (
           <CardFooter className="flex-col items-stretch">
-            <div className="space-y-2">
-              {expenses.map((expense) => (
-                <div
-                  key={expense.id}
-                  className="flex justify-between items-center bg-primary border border-700 p-2 rounded-md"
-                >
-                  <span>
-                    {expense.description} - ${expense.amount.toFixed(2)} (Paid
-                    by {expense.paidBy})
-                  </span>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => removeExpense(expense.id)}
+            <motion.div
+              className="space-y-2"
+              initial="hidden"
+              animate="visible"
+              variants={{
+                visible: { transition: { staggerChildren: 0.1 } },
+              }}
+            >
+              <AnimatePresence>
+                {expenses.map((expense) => (
+                  <motion.div
+                    key={expense.id}
+                    className="flex justify-between items-center bg-primary border border-700 p-2 rounded-md"
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{ duration: 0.3 }}
                   >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                </div>
-              ))}
-            </div>
+                    <span>
+                      {expense.description} - ${expense.amount.toFixed(2)} (Paid
+                      by {expense.paidBy})
+                    </span>
+                    <MotionButton
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => removeExpense(expense.id)}
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </MotionButton>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+            </motion.div>
           </CardFooter>
         )}
-      </Card>
+      </MotionCard>
 
-      <Button
+      <MotionButton
         onClick={splitExpenses}
         className="w-full bg-gray-200 text-gray-700 hover:bg-gray-200 hover:text-gray-600"
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        initial={{ y: -20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.6, duration: 0.5 }}
       >
         Split Expenses
-      </Button>
-    </div>
+      </MotionButton>
+    </motion.div>
   );
 }
