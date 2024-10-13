@@ -76,16 +76,18 @@ export default function Profile() {
             {group.isCreator ? (
               <Button
                 onClick={() => handleWithdraw(group.id)}
-                className="mt-4 w-full"
+                className="mt-4 w-full text-gray-700"
                 disabled={group.paidAmount < group.totalAmount}
+                variant="outline"
               >
                 Withdraw Funds
               </Button>
             ) : (
               <Button
                 onClick={() => handlePayment(group.id)}
-                className="mt-4 w-full"
+                className="mt-4 w-full text-gray-700"
                 disabled={group.paidAmount === group.totalAmount}
+                variant="outline"
               >
                 Pay Your Share
               </Button>

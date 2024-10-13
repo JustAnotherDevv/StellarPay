@@ -111,7 +111,7 @@ const Navigation = ({ isMobile, activePage, setActivePage }) => {
   ];
 
   const navClass = isMobile
-    ? "fixed bottom-0 left-0 right-0 bg-primary p-2 z-10"
+    ? "fixed bottom-0 left-0 right-0 bg-primary/90 backdrop-blur-xl   p-2 z-10 border-t border-gray-700"
     : "sticky top-0 h-screen w-52 bg-primary p-4 flex flex-col justify-between overflow-y-auto";
 
   if (isMobile) {
@@ -180,7 +180,14 @@ export default function Layout({ children }) {
   const [activePage, setActivePage] = useState("Home");
 
   return (
-    <div className="flex flex-col md:flex-row min-h-screen bg-gray-800 text-white">
+    <div
+      className="flex flex-col md:flex-row min-h-screen bg-gray-800 text-gray-200"
+      style={{
+        backgroundImage: 'url("/memphis-mini-dark.webp")',
+        // backgroundSize: "100px",
+        backgroundRepeat: "repeat",
+      }}
+    >
       {!isMobile && (
         <Navigation
           isMobile={false}

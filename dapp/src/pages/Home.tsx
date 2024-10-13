@@ -75,22 +75,30 @@ const PaymentSplitterBanner = () => {
   return (
     <div>
       <div className="min-h-screen text-gray-100 md:w-3/4 mx-auto">
-        <div className="relative h-80 bg-primary border border-gray-700 overflow-hidden rounded-md ">
+        <div
+          className="relative h-80 bg-primary overflow-hidden rounded-md border border-gray-700"
+          style={{
+            position: "relative",
+            isolation: "isolate",
+          }}
+        >
+          <div
+            style={{
+              content: '""',
+              position: "absolute",
+              inset: 0,
+              backgroundImage: 'url("/bg-2.jpg")',
+              // backgroundSize: "100px",
+              // backgroundRepeat: "repeat",
+              opacity: 0.3,
+              zIndex: -1,
+            }}
+          />
           <motion.div
-            className="absolute inset-0"
+            className="absolute inset-0 bg-gray-800"
             animate={{
               backgroundPosition: ["0% 0%", "100% 100%"],
               opacity: [0.2, 0.3],
-            }}
-            transition={{
-              duration: 20,
-              ease: "linear",
-              repeat: Infinity,
-              repeatType: "reverse",
-            }}
-            style={{
-              backgroundImage: 'url("/api/placeholder/1200/800")',
-              backgroundSize: "cover",
             }}
           />
           <div className="relative z-10 h-full flex flex-col justify-center items-center text-center p-6">
@@ -100,7 +108,8 @@ const PaymentSplitterBanner = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
             >
-              Welcome to SplitCrypto
+              {/* Welcome to SplitPay */}
+              GM Jack
             </motion.h1>
             <motion.p
               className="text-xl text-gray-400"
@@ -113,7 +122,7 @@ const PaymentSplitterBanner = () => {
           </div>
         </div>
 
-        <div className="max-w-4xl mx-auto px-4 py-8">
+        <div className="max-w-4xl mx-auto py-8">
           <motion.div
             className="grid grid-cols-3 gap-4 mb-8"
             initial={{ opacity: 0, y: 20 }}
@@ -123,8 +132,8 @@ const PaymentSplitterBanner = () => {
             {menuItems.map((item, index) => (
               <Button
                 key={index}
-                variant="outline"
-                className="h-20 flex flex-col items-center justify-center bg-gray-800 hover:bg-gray-700 transition-colors"
+                variant="default"
+                className="h-20 flex flex-col items-center justify-center "
               >
                 <item.icon className="h-6 w-6 mb-2" />
                 <span>{item.label}</span>
@@ -139,7 +148,7 @@ const PaymentSplitterBanner = () => {
               transition={{ duration: 0.5, delay: 0.6 }}
             >
               <h2 className="text-2xl font-semibold mb-4">Upcoming Expenses</h2>
-              <Card className="bg-gray-800 border-gray-700">
+              <Card className="bg-primary border-gray-700">
                 <CardContent className="p-0">
                   <ul className="divide-y divide-gray-700">
                     {expenses
@@ -173,7 +182,7 @@ const PaymentSplitterBanner = () => {
               transition={{ duration: 0.5, delay: 0.8 }}
             >
               <h2 className="text-2xl font-semibold mb-4">Past Expenses</h2>
-              <Card className="bg-gray-800 border-gray-700">
+              <Card className="bg-primary border-gray-700">
                 <CardContent className="p-0">
                   <ul className="divide-y divide-gray-700">
                     {expenses
