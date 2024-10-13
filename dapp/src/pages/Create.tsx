@@ -159,6 +159,7 @@ export default function Create() {
   const handleImageUpload = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
+    if (!event?.target?.files) return null;
     const file = event?.target?.files[0];
     if (file) {
       try {
@@ -171,19 +172,11 @@ export default function Create() {
         const ipfsHash = await uploadImageToInfura(file);
         console.log("IPFS Hash:", ipfsHash);
         setIpfsCid(ipfsHash);
+        console.log(ipfsCid);
       } catch (error) {
         console.error("Upload failed:", error);
       }
     }
-
-    // const file = event.target.files?.[0];
-    // if (file) {
-    //   const reader = new FileReader();
-    //   reader.onloadend = () => {
-    //     setReceiptImage(reader.result as string);
-    //   };
-    //   reader.readAsDataURL(file);
-    // }
   };
 
   return (
@@ -193,11 +186,57 @@ export default function Create() {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
+      <div
+        className="relative h-40 bg-primary overflow-hidden rounded-md border border-gray-700"
+        style={{
+          position: "relative",
+          isolation: "isolate",
+        }}
+      >
+        <div
+          style={{
+            content: '""',
+            position: "absolute",
+            inset: 0,
+            backgroundImage: 'url("/bg-2.jpg")',
+            // backgroundSize: "100px",
+            // backgroundRepeat: "repeat",
+            opacity: 0.3,
+            zIndex: -1,
+          }}
+        />
+        <motion.div
+          className="absolute inset-0 bg-gray-800"
+          animate={{
+            backgroundPosition: ["0% 0%", "100% 100%"],
+            opacity: [0.2, 0.3],
+          }}
+        />
+        <div className="relative z-10 h-full flex flex-col justify-center items-center text-center p-6">
+          <motion.h1
+            className="text-4xl font-bold mb-2 text-gray-200"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            New Group
+          </motion.h1>
+          <motion.p
+            className="text-xl text-gray-400"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            Split expenses, not friendships! 💸🤝
+          </motion.p>
+        </div>
+      </div>
       <MotionCard
-        className="bg-primary text-gray-200 border border-gray-700"
+        className="bg-primary text-gray-200 border border-gray-700 overflow-hidden relative shine-effect"
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.2, duration: 0.5 }}
+        whileHover={{ scale: 1.02 }}
       >
         <CardHeader>
           <CardTitle>Add Participants</CardTitle>
@@ -243,6 +282,36 @@ export default function Create() {
             </AnimatePresence>
           </motion.div>
         </CardContent>
+        <style>{`
+          .shine-effect {
+            position: relative;
+            overflow: hidden;
+          }
+          .shine-effect::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+              to bottom right,
+              rgba(255, 255, 255, 0) 0%,
+              rgba(255, 255, 255, 0.1) 50%,
+              rgba(255, 255, 255, 0) 100%
+            );
+            transform: rotate(45deg);
+            animation: shine 3s infinite;
+          }
+          @keyframes shine {
+            0% {
+              transform: translateX(-200%) translateY(-200%) rotate(45deg);
+            }
+            100% {
+              transform: translateX(200%) translateY(200%) rotate(45deg);
+            }
+          }
+        `}</style>
       </MotionCard>
 
       <MotionCard

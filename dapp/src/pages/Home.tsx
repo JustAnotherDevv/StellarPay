@@ -101,7 +101,7 @@ const PaymentSplitterBanner = () => {
     <div>
       <div className="min-h-screen text-gray-100 md:w-3/4 mx-auto">
         <div
-          className="relative h-80 bg-primary overflow-hidden rounded-md border border-gray-700"
+          className="relative h-60 bg-primary overflow-hidden rounded-md border border-gray-700"
           style={{
             position: "relative",
             isolation: "isolate",
@@ -147,7 +147,7 @@ const PaymentSplitterBanner = () => {
           </div>
         </div>
 
-        <div className="max-w-4xl mx-auto pt-8 w-full">
+        <div className="max-w-4xl mx-auto pt-4 sm:pt-8  w-full">
           <motion.div
             className="w-full"
             initial={{ opacity: 0, y: 20 }}
@@ -163,13 +163,13 @@ const PaymentSplitterBanner = () => {
               whileHover={{ scale: 1.02 }}
             >
               <CardHeader className="pb-2">
-                <CardTitle className="text-2xl font-bold">
+                <CardTitle className="text-xl sm:text-2xl font-bold">
                   User Profile
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0 md:space-x-4">
-                  <div className="flex items-center space-x-4">
+                <div className="flex flex-col sm:flex-row items-center sm:items-start justify-between space-y-4 sm:space-y-0 sm:space-x-4">
+                  <div className="flex flex-col sm:flex-row items-center sm:items-start space-y-4 sm:space-y-0 sm:space-x-4">
                     <Avatar className="h-20 w-20">
                       <AvatarImage
                         src="https://github.com/shadcn.png"
@@ -177,19 +177,19 @@ const PaymentSplitterBanner = () => {
                       />
                       <AvatarFallback>JD</AvatarFallback>
                     </Avatar>
-                    <div>
+                    <div className="text-center sm:text-left">
                       <h2 className="text-xl font-semibold">Jack Doe</h2>
                       <p className="text-gray-400">@jack_doe</p>
                     </div>
                   </div>
-                  <div className="flex flex-col space-y-2 items-end">
+                  <div className="flex flex-col space-y-2 items-center sm:items-end">
                     <div className="flex items-center space-x-2">
                       <Users className="h-5 w-5 text-gray-400" />
                       <span className="text-lg font-medium">5 Groups</span>
                     </div>
                     <Button
                       variant="outline"
-                      className="w-full md:w-auto text-gray-800"
+                      className="w-full sm:w-auto text-gray-800"
                       onClick={handleConnect}
                     >
                       <Wallet className="mr-2 h-4 w-4" />
