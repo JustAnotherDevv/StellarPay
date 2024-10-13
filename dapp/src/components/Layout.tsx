@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import { useStellarWallets } from "@/context/StellarWalletsContext";
 import { ISupportedWallet } from "@creit.tech/stellar-wallets-kit";
 import { truncateStr } from "@/utils";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const Logo = () => (
   <div className="flex items-center justify-center mb-6">
@@ -20,6 +20,7 @@ const Logo = () => (
 );
 
 const NavItem = ({ icon: Icon, label, path, isActive, isMobile, onClick }) => {
+  const location = useLocation();
   return (
     <Link
       to={path}
@@ -32,9 +33,9 @@ const NavItem = ({ icon: Icon, label, path, isActive, isMobile, onClick }) => {
         transition={{ type: "spring", stiffness: 400, damping: 17 }}
       >
         <Button
-          variant={isActive ? "secondary" : "ghost"}
+          variant={location.pathname == path ? "secondary" : "ghost"}
           className={`flex items-center justify-start relative w-full ${
-            isActive
+            location.pathname == path
               ? "bg-blue-600 text-white hover:bg-white hover:text-black"
               : "text-gray-400"
           } relative`}
@@ -57,7 +58,7 @@ const NavItem = ({ icon: Icon, label, path, isActive, isMobile, onClick }) => {
               {label}
             </motion.span>
           ) : null}
-          {isActive && (
+          {location.pathname == path && (
             <motion.div
               className="absolute -top-1 -right-1 bg-blue-400 rounded-full p-1"
               initial={{ scale: 0 }}
@@ -156,21 +157,26 @@ const Navigation = ({ isMobile, activePage, setActivePage }) => {
           ))}
         </div>
       </div>
-      <Button
-        variant="outline"
-        className="mt-auto w-full text-gray-800"
-        onClick={handleConnect}
-      >
-        <Wallet className="mr-2 h-4 w-4" />{" "}
-        {stellarAddress == "" ? (
-          <>Connect Wallet</>
-        ) : (
-          <>
-            {/* Disconnect */}
-            {truncateStr(stellarAddress, 5)}
-          </>
-        )}
-      </Button>
+      <div>
+        <Button
+          variant="outline"
+          className="mt-auto w-full text-gray-800"
+          onClick={handleConnect}
+        >
+          <Wallet className="mr-2 h-4 w-4" />{" "}
+          {stellarAddress == "" ? (
+            <>Connect Wallet</>
+          ) : (
+            <>
+              {/* Disconnect */}
+              {truncateStr(stellarAddress, 5)}
+            </>
+          )}
+        </Button>
+        <div className="flex mx-auto w-full justify-around mt-2 text-gray-600/80 text-md">
+          Powered By Stellar
+        </div>
+      </div>
     </nav>
   );
 };
