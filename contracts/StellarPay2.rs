@@ -37,6 +37,7 @@ pub struct Contract;
 impl Contract {
     // Member functions
     pub fn set_member(env: Env, address: Address, nickname: String) {
+        address.require_auth();
         let member = Member { nickname, address: address.clone() };
         env.storage().instance().set(&DataKey::Member(address), &member);
     }
