@@ -59,7 +59,7 @@ One key challenge faced by users in big groups or those in a rush is the time an
 
 The app’s streamlined process allows users to split expenses and execute payments on the go, making it perfect for situations where time is of the essence, like dining with friends, travelling, or group activities. By leveraging blockchain technology and automation, the app ensures smooth, secure transactions while minimizing the complexity for everyday users.
 
-### Solution
+### Images
 
 <img width="1728" alt="image" src="https://github.com/user-attachments/assets/6ae7d45f-e28d-47da-af84-02fe3f3ce967">
 
