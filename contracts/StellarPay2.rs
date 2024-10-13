@@ -1,11 +1,12 @@
 #![no_std]
-use soroban_sdk::{contract, contracttype, contractimpl, Address, Env, Map, String, Symbol, Vec, Error};
+use soroban_sdk::{contract, contracttype, contractimpl, Address, Env, Map, String, Symbol, Vec, Error, log};
 
 #[contracttype]
 pub enum DataKey {
     Member(Address),
     Group(Symbol),
     Transaction(Address), // Modified to only use Address
+    AllGroupIds, // New key for storing the list of all group IDs
 }
 
 #[contracttype]
@@ -49,7 +50,26 @@ impl Contract {
     // Group functions
     pub fn set_group(env: Env, group_id: Symbol, owner: Address, members: Map<Address, i128>) {
         let group = Group { group_id: group_id.clone(), owner, members };
-        env.storage().instance().set(&DataKey::Group(group_id), &group);
+        env.storage().instance().set(&DataKey::Group(group_id.clone()), &group);
+
+        // Update the list of all group IDs
+        let mut all_group_ids: Vec<Symbol> = env.storage().instance().get(&DataKey::AllGroupIds).unwrap_or_else(|| {
+            log!(&env, "Initializing new all_group_ids vector");
+            Vec::new(&env)
+        });
+        
+        if !all_group_ids.contains(&group_id) {
+            log!(&env, "Adding new group_id to all_group_ids: {:?}", group_id);
+            all_group_ids.push_back(group_id.clone());
+            env.storage().instance().set(&DataKey::AllGroupIds, &all_group_ids);
+        }
+
+        log!(&env, "Current all_group_ids: {:?}", all_group_ids);
+    }
+    pub fn get_all_group_ids(env: Env) -> Vec<Symbol> {
+        let all_group_ids = env.storage().instance().get(&DataKey::AllGroupIds).unwrap_or_else(|| Vec::new(&env));
+        log!(&env, "Retrieved all_group_ids: {:?}", all_group_ids);
+        all_group_ids
     }
 
     pub fn get_group(env: Env, group_id: Symbol) -> Result<Group, Error> {
