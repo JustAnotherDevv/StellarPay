@@ -20,3 +20,12 @@ stellar network add \
   --global testnet \
   --rpc-url https://soroban-testnet.stellar.org:443 \
   --network-passphrase "Test SDF Network ; September 2015"
+
+
+Contracts deployed:
+Testnet: 
+  Upload: https://futurenet.stellarchain.io/transactions/56678a618ce44df498de9a2e433ce9b2ca310a8fff7d2ca4ae0493964c1dd36e
+  Create: https://futurenet.stellarchain.io/transactions/415a8ec3f1d16425f4ecfc1539749b6c9c2ea564259adaacc2f04942aa1c9ca3
+Futurnet: 
+  Upload: https://testnet.stellarchain.io/transactions/0c429f3f64a4a0a6064b7c231e6078a9c0b0a70d5e272970543ccf24b56e945d
+  Create: https://testnet.stellarchain.io/transactions/ef96c6e47417ecec40743ccf7c4f5b383afa42e09ee1c3689d97997bcd630025
