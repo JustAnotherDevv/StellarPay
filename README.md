@@ -82,6 +82,12 @@ The app’s streamlined process allows users to split expenses and execute payme
 - **Web3** - Stellar + Soroban smart contracts
 - **Auth** - Passkeys / Freigther
 
+ ## Tech Team 
+
+- **DANIEL ZARZECKI ** -  daniel.zarzecki047@gmail.com | @nevvdevv 
+- **NOÉ DE LARMINAT** - noe.de.91@gmail.com | @NodeLarminat
+- **CINDY CIENIEK** - cindycieniek@gmail.com | @ciencck28593
+
 ## Getting Started
 
 - Install dependenciex - `pnpm i`
