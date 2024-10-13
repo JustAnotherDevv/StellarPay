@@ -45,8 +45,9 @@ graph TD
 
 ### Links
 
-- Live Demo
-- Pitch Deck
+- [Live Demo](https://www.youtube.com/watch?v=EyXrEwHLkoo](https://www.youtube.com/watch?v=EyXrEwHLkoo)
+- [Pitch Deck](https://www.canva.com/design/DAGTabHuIc4/BDLopYPbazWElCHx-Q-Z7A/edit?utm_content=DAGTabHuIc4&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
+)
 - Video
 
 ### Problem
@@ -64,14 +65,6 @@ The app’s streamlined process allows users to split expenses and execute payme
 <img width="1728" alt="image" src="https://github.com/user-attachments/assets/d7585a3a-dd8e-45ef-83d6-75919dfd2747">
 
 <img width="1728" alt="image" src="https://github.com/user-attachments/assets/7dfc9f20-2144-4d6d-a1ce-8aff8e76d929">
-
-### Demo Video
-
-[![Demo]([https://img.youtube.com/vi/YOUTUBE_VIDEO_ID_HERE/0.jpg)](https://www.youtube.com/watch?v=YOUTUBE_VIDEO_ID_HERE](https://youtu.be/EyXrEwHLkoo))
-
-### Canva Presentation Slides
-
-https://www.canva.com/design/DAGTabHuIc4/BDLopYPbazWElCHx-Q-Z7A/edit?utm_content=DAGTabHuIc4&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
 
 ## Features
 
