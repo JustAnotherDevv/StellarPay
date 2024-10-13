@@ -12,7 +12,7 @@ import { Link, useLocation } from "react-router-dom";
 const Logo = () => (
   <div className="flex items-center justify-center mb-6">
     <img
-      className="w-12 h-12 overflow-hidden rounded-full"
+      className="w-8 h-8 overflow-hidden rounded-full"
       src="/logo.png"
       alt=""
     />
@@ -112,7 +112,7 @@ const Navigation = ({ isMobile, activePage, setActivePage }) => {
 
   const navClass = isMobile
     ? "fixed bottom-0 left-0 right-0 bg-primary/90 backdrop-blur-xl py-3 px-2 z-10 border-t border-gray-700"
-    : "sticky top-0 h-screen w-52 bg-primary p-4 flex flex-col justify-between overflow-y-auto";
+    : "sticky top-0 h-screen w-52 bg-primary py-4 pl-4 pr-8 flex flex-col justify-between overflow-y-auto ";
 
   if (isMobile) {
     return (
