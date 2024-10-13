@@ -49,12 +49,14 @@ export default function Profile() {
     });
   };
 
-  const handleWithdraw = (groupId: number) => {
-    toast({
-      title: "Withdrawal Initiated",
-      description: "Your withdrawal request has been submitted.",
-    });
-  };
+  const handleWithdraw = () =>
+    // groupId: number
+    {
+      toast({
+        title: "Withdrawal Initiated",
+        description: "Your withdrawal request has been submitted.",
+      });
+    };
 
   return (
     <motion.div
@@ -106,7 +108,10 @@ export default function Profile() {
               </div>
               {group.isCreator ? (
                 <MotionButton
-                  onClick={() => handleWithdraw(group.id)}
+                  onClick={() =>
+                    handleWithdraw()
+                    // group.id
+                  }
                   className="mt-4 w-full text-gray-700"
                   disabled={group.paidAmount < group.totalAmount}
                   variant="outline"
