@@ -20,6 +20,7 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { motion, AnimatePresence } from "framer-motion";
+import { uploadImageToInfura } from "@/utils";
 
 type Expense = {
   id: number;
@@ -47,6 +48,7 @@ export default function Create() {
   const [newParticipant, setNewParticipant] = useState("");
   const [splitType, setSplitType] = useState("manual");
   const [totalAmount, setTotalAmount] = useState(0);
+  const [ipfsCid, setIpfsCid] = useState(null);
   const [receiptImage, setReceiptImage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
@@ -154,15 +156,34 @@ export default function Create() {
     });
   };
 
-  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
+  const handleImageUpload = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = event?.target?.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setReceiptImage(reader.result as string);
-      };
-      reader.readAsDataURL(file);
+      try {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setReceiptImage(reader.result as string);
+        };
+        reader.readAsDataURL(file);
+
+        const ipfsHash = await uploadImageToInfura(file);
+        console.log("IPFS Hash:", ipfsHash);
+        setIpfsCid(ipfsHash);
+      } catch (error) {
+        console.error("Upload failed:", error);
+      }
     }
+
+    // const file = event.target.files?.[0];
+    // if (file) {
+    //   const reader = new FileReader();
+    //   reader.onloadend = () => {
+    //     setReceiptImage(reader.result as string);
+    //   };
+    //   reader.readAsDataURL(file);
+    // }
   };
 
   return (

@@ -17,6 +17,9 @@ importers:
       '@creit.tech/stellar-wallets-kit':
         specifier: ^1.2.3
         version: 1.2.3(@types/react@18.3.11)(react@18.3.1)
+      '@darkedges/capacitor-native-webauthn':
+        specifier: ^0.0.4
+        version: 0.0.4(@capacitor/core@6.1.2)
       '@radix-ui/react-avatar':
         specifier: ^1.1.1
         version: 1.1.1(@types/react-dom@18.3.0)(@types/react@18.3.11)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -44,6 +47,9 @@ importers:
       '@stellar/stellar-sdk':
         specifier: ^12.3.0
         version: 12.3.0
+      axios:
+        specifier: ^1.7.7
+        version: 1.7.7
       base64url:
         specifier: ^3.0.1
         version: 3.0.1
@@ -2240,14 +2246,12 @@ packages:
   set-blocking@2.0.0:
     resolution: {integrity: sha512-KiKBS8AnWGEyLzofFfmvKwpdPzqiy16LvQfK3yv/fVH7Bj13/wl3JSR1J+rfgRE9q7xUJK4qvgS8raSOeLUehw==}
 
-<<<<<<< HEAD
-  shallow-equal@3.1.0:
-    resolution: {integrity: sha512-pfVOw8QZIXpMbhBWvzBISicvToTiM5WBF1EeAUZDDSb5Dt29yl4AYbyywbJFSEsRUMr7gJaxqCdr4L3tQf9wVg==}
-=======
   sha.js@2.4.11:
     resolution: {integrity: sha512-QMEp5B7cftE7APOjk5Y6xgrbWu+WkLVQwk8JNjZ8nKRciZaByEW6MubieAiToS7+dwvrjGhH8jRXz3MVd0AYqQ==}
     hasBin: true
->>>>>>> ed2751b (Added the contracts env)
+
+  shallow-equal@3.1.0:
+    resolution: {integrity: sha512-pfVOw8QZIXpMbhBWvzBISicvToTiM5WBF1EeAUZDDSb5Dt29yl4AYbyywbJFSEsRUMr7gJaxqCdr4L3tQf9wVg==}
 
   shebang-command@2.0.0:
     resolution: {integrity: sha512-kHxr2zZpYtdmrN1qDjrrX/Z1rR1kG8Dx+gkpK1G4eXmvXswmcE1hTWBWYUzlraYw1/yZp6YuDY77YtvbN0dmDA==}
@@ -4836,14 +4840,12 @@ snapshots:
 
   set-blocking@2.0.0: {}
 
-<<<<<<< HEAD
-  shallow-equal@3.1.0: {}
-=======
   sha.js@2.4.11:
     dependencies:
       inherits: 2.0.4
       safe-buffer: 5.2.1
->>>>>>> ed2751b (Added the contracts env)
+
+  shallow-equal@3.1.0: {}
 
   shebang-command@2.0.0:
     dependencies:
