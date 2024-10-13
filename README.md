@@ -43,7 +43,16 @@ The app’s streamlined process allows users to split expenses and execute payme
 
 ### Solution
 
--
+<img width="1728" alt="image" src="https://github.com/user-attachments/assets/6ae7d45f-e28d-47da-af84-02fe3f3ce967">
+
+<img width="1728" alt="image" src="https://github.com/user-attachments/assets/d7585a3a-dd8e-45ef-83d6-75919dfd2747">
+
+<img width="1728" alt="image" src="https://github.com/user-attachments/assets/7dfc9f20-2144-4d6d-a1ce-8aff8e76d929">
+
+
+### Canva Presentation Slides
+
+https://www.canva.com/design/DAGTabHuIc4/BDLopYPbazWElCHx-Q-Z7A/edit?utm_content=DAGTabHuIc4&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
 
 ## Features
 
