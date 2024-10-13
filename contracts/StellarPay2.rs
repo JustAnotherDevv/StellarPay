@@ -5,7 +5,7 @@ use soroban_sdk::{contract, contracttype, contractimpl, Address, Env, Map, Strin
 pub enum DataKey {
     Member(Address),
     Group(Symbol),
-    Transaction(Address, Symbol, u32),
+    Transaction(Address), // Modified to only use Address
 }
 
 #[contracttype]
@@ -18,7 +18,6 @@ pub struct Member {
 pub struct Group {
     group_id: Symbol,
     owner: Address,
-    total_amount: i128,
     members: Map<Address, i128>,
 }
 
@@ -26,7 +25,7 @@ pub struct Group {
 pub struct Transaction {
     user_id: Address,
     group_id: Symbol,
-    amount: i128,
+    amounts: Map<Address, i128>,
     proof: String,
     approvals: Vec<Address>,
 }
@@ -47,8 +46,8 @@ impl Contract {
     }
 
     // Group functions
-    pub fn set_group(env: Env, group_id: Symbol, owner: Address, total_amount: i128, members: Map<Address, i128>) {
-        let group = Group { group_id: group_id.clone(), owner, total_amount, members };
+    pub fn set_group(env: Env, group_id: Symbol, owner: Address, members: Map<Address, i128>) {
+        let group = Group { group_id: group_id.clone(), owner, members };
         env.storage().instance().set(&DataKey::Group(group_id), &group);
     }
 
@@ -71,28 +70,25 @@ impl Contract {
     }
 
     // Transaction functions
-    pub fn set_transaction(env: Env, user_id: Address, group_id: Symbol, amount: i128, proof: String) {
+    pub fn set_transaction(env: Env, user_id: Address, group_id: Symbol, amounts: Map<Address, i128>, proof: String) {
         let transaction = Transaction {
             user_id: user_id.clone(),
-            group_id: group_id.clone(),
-            amount,
+            group_id,
+            amounts,
             proof,
             approvals: Vec::new(&env),
         };
-        let key = DataKey::Transaction(user_id, group_id, env.ledger().sequence());
-        env.storage().instance().set(&key, &transaction);
+        env.storage().instance().set(&DataKey::Transaction(user_id), &transaction);
     }
 
-    pub fn get_transaction(env: Env, user_id: Address, group_id: Symbol, sequence: u32) -> Result<Transaction, Error> {
-        let key = DataKey::Transaction(user_id, group_id, sequence);
-        env.storage().instance().get(&key).ok_or_else(|| Error::from_contract_error(3))
+    pub fn get_transaction(env: Env, user_id: Address) -> Result<Transaction, Error> {
+        env.storage().instance().get(&DataKey::Transaction(user_id)).ok_or_else(|| Error::from_contract_error(3))
     }
 
-    pub fn add_approval(env: Env, user_id: Address, group_id: Symbol, sequence: u32, approver: Address) -> Result<(), Error> {
-        let key = DataKey::Transaction(user_id, group_id, sequence);
-        let mut transaction: Transaction = env.storage().instance().get(&key).ok_or_else(|| Error::from_contract_error(3))?;
+    pub fn add_approval(env: Env, user_id: Address, approver: Address) -> Result<(), Error> {
+        let mut transaction: Transaction = env.storage().instance().get(&DataKey::Transaction(user_id.clone())).ok_or_else(|| Error::from_contract_error(3))?;
         transaction.approvals.push_back(approver);
-        env.storage().instance().set(&key, &transaction);
+        env.storage().instance().set(&DataKey::Transaction(user_id), &transaction);
         Ok(())
     }
 }
