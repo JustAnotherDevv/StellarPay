@@ -108,7 +108,7 @@ const Navigation = ({ isMobile, activePage, setActivePage }) => {
   const navItems = [
     { icon: Home, label: "Home", path: "/" },
     { icon: Plus, label: "Create", path: "/create" },
-    { icon: User, label: "Profile", path: "/profile" },
+    { icon: User, label: "Groups", path: "/profile" },
   ];
 
   const navClass = isMobile

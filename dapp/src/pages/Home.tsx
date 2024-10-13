@@ -293,8 +293,8 @@ const PaymentSplitterBanner = () => {
             </motion.div>
           </div>
         </div>
-        <div className="flex flex-col mx-auto">
-          <div className="flex mt-8 mb-2">
+        <div className="flex flex-col mx-auto mb-8">
+          <div className="flex mb-4">
             <h1 className="text-2xl font-bold mb-4 mx-auto display-block block">
               All the features in one app
             </h1>
