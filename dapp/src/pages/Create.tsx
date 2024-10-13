@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { motion, AnimatePresence } from "framer-motion";
 
 type Expense = {
   id: number;
@@ -31,6 +32,9 @@ type Participant = {
   id: number;
   name: string;
 };
+
+const MotionCard = motion(Card);
+const MotionButton = motion(Button);
 
 export default function Create() {
   const [expenses, setExpenses] = useState<Expense[]>([]);
@@ -162,8 +166,18 @@ export default function Create() {
   };
 
   return (
-    <div className="space-y-8 px-4 py-4 mx-auto md:w-1/2">
-      <Card className="bg-primary text-gray-200 border border-gray-700">
+    <motion.div
+      className="space-y-8 px-4 py-4 mx-auto md:w-1/2"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+    >
+      <MotionCard
+        className="bg-primary text-gray-200 border border-gray-700"
+        initial={{ y: -20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.2, duration: 0.5 }}
+      >
         <CardHeader>
           <CardTitle>Add Participants</CardTitle>
         </CardHeader>
@@ -174,28 +188,48 @@ export default function Create() {
               value={newParticipant}
               onChange={(e) => setNewParticipant(e.target.value)}
             />
-            <Button
+            <MotionButton
               variant="outline"
               className="mt-auto text-gray-800"
               onClick={addParticipant}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
               Add
-            </Button>
+            </MotionButton>
           </div>
-          <div className="mt-4 flex flex-wrap gap-2">
-            {participants.map((participant) => (
-              <div
-                key={participant.id}
-                className="bg-secondary text-secondary-foreground px-3 py-1 rounded-md text-sm"
-              >
-                {participant.name}
-              </div>
-            ))}
-          </div>
+          <motion.div
+            className="mt-4 flex flex-wrap gap-2"
+            initial="hidden"
+            animate="visible"
+            variants={{
+              visible: { transition: { staggerChildren: 0.1 } },
+            }}
+          >
+            <AnimatePresence>
+              {participants.map((participant) => (
+                <motion.div
+                  key={participant.id}
+                  className="bg-secondary text-secondary-foreground px-3 py-1 rounded-md text-sm"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  {participant.name}
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </motion.div>
         </CardContent>
-      </Card>
+      </MotionCard>
 
-      <Card className="bg-primary text-gray-200 border border-gray-700">
+      <MotionCard
+        className="bg-primary text-gray-200 border border-gray-700"
+        initial={{ y: -20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.4, duration: 0.5 }}
+      >
         <CardHeader>
           <CardTitle>Expense Details</CardTitle>
         </CardHeader>
@@ -332,9 +366,14 @@ export default function Create() {
           )}
 
           {splitType === "manual" && (
-            <Button onClick={addExpense} className="w-full">
+            <MotionButton
+              onClick={addExpense}
+              className="w-full"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
               <PlusCircle className="mr-2 h-4 w-4" /> Add Expense
-            </Button>
+            </MotionButton>
           )}
 
           <div className="space-y-2">
@@ -348,13 +387,15 @@ export default function Create() {
                 className="hidden"
                 ref={fileInputRef}
               />
-              <Button
+              <MotionButton
                 onClick={() => fileInputRef.current?.click()}
                 variant="outline"
                 className="text-gray-700"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
               >
                 <Upload className="mr-2 h-4 w-4" /> Upload Image
-              </Button>
+              </MotionButton>
               {receiptImage && (
                 <span className="text-sm text-muted-foreground">
                   Image uploaded
@@ -375,36 +416,56 @@ export default function Create() {
         </CardContent>
         {splitType === "manual" && (
           <CardFooter className="flex-col items-stretch">
-            <div className="space-y-2">
-              {expenses.map((expense) => (
-                <div
-                  key={expense.id}
-                  className="flex justify-between items-center bg-primary border border-700 p-2 rounded-md"
-                >
-                  <span>
-                    {expense.description} - ${expense.amount.toFixed(2)} (Paid
-                    by {expense.paidBy})
-                  </span>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => removeExpense(expense.id)}
+            <motion.div
+              className="space-y-2"
+              initial="hidden"
+              animate="visible"
+              variants={{
+                visible: { transition: { staggerChildren: 0.1 } },
+              }}
+            >
+              <AnimatePresence>
+                {expenses.map((expense) => (
+                  <motion.div
+                    key={expense.id}
+                    className="flex justify-between items-center bg-primary border border-700 p-2 rounded-md"
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{ duration: 0.3 }}
                   >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                </div>
-              ))}
-            </div>
+                    <span>
+                      {expense.description} - ${expense.amount.toFixed(2)} (Paid
+                      by {expense.paidBy})
+                    </span>
+                    <MotionButton
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => removeExpense(expense.id)}
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </MotionButton>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+            </motion.div>
           </CardFooter>
         )}
-      </Card>
+      </MotionCard>
 
-      <Button
+      <MotionButton
         onClick={splitExpenses}
         className="w-full bg-gray-200 text-gray-700 hover:bg-gray-200 hover:text-gray-600"
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        initial={{ y: -20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.6, duration: 0.5 }}
       >
         Split Expenses
-      </Button>
-    </div>
+      </MotionButton>
+    </motion.div>
   );
 }
