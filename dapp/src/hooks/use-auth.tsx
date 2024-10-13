@@ -32,7 +32,6 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// Import environment variables
 const PUBLIC_horizonUrl = import.meta.env.VITE_PUBLIC_horizonUrl;
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({
@@ -60,7 +59,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
       setUserAddress(newBundlerKey.publicKey());
       localStorage.setItem("sp:bundler", newBundlerKey.secret());
 
-      // Fund the new account using friendbot
       const horizon = new Horizon.Server(PUBLIC_horizonUrl!);
       try {
         await horizon.friendbot(newBundlerKey.publicKey()).call();
@@ -74,12 +72,11 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   useEffect(() => {
     initializeBundler();
 
-    // Check if user is already authenticated
     const storedDeployee = localStorage.getItem("sp:deployee");
     if (storedDeployee) {
       setDeployee(storedDeployee);
       setIsAuthenticated(true);
-      setConnection({ status: "connected", network: "testnet" }); // Assuming testnet, adjust as needed
+      setConnection({ status: "connected", network: "testnet" });
     }
   }, [initializeBundler]);
 
@@ -125,7 +122,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
         setDeployee(newDeployee);
         localStorage.setItem("sp:deployee", newDeployee);
         setIsAuthenticated(true);
-        setConnection({ status: "connected", network: "testnet" }); // Assuming testnet, adjust as needed
+        setConnection({ status: "connected", network: "testnet" });
       } else {
         throw new Error("BundlerKey is not initialized");
       }
@@ -145,11 +142,12 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
         userVerification: "discouraged",
       });
 
-      // Here you might want to verify the authentication on your server
-      // For now, we'll just set the authenticated state
       localStorage.setItem("sp:id", signInRes.id);
+
+      //
+
       setIsAuthenticated(true);
-      setConnection({ status: "connected", network: "testnet" }); // Assuming testnet, adjust as needed
+      setConnection({ status: "connected", network: "testnet" });
     } catch (error) {
       console.error("Sign in error:", error);
       throw error;

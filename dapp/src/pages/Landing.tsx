@@ -81,26 +81,11 @@ const Landing = () => {
           <div className="relative z-10 flex flex-col md:flex-row items-center justify-between">
             <div className="mb-8 md:mb-0">
               <h1 className="text-6xl font-extrabold mb-4 bg-clip-text text-gray-200 drop-shadow-lg">
-                CryptoSplit
+                SplitterTab
               </h1>
               <p className="text-xl text-gray-200 mb-6 drop-shadow">
                 Split expenses with crypto, revolutionize your finances
               </p>
-              {/* <div className="flex space-x-4">
-                <Button
-                  className="bg-purple-600 hover:bg-purple-700 text-white px-8 py-3 rounded-md"
-                  onClick={register}
-                >
-                  Register
-                </Button>
-                <Button
-                  variant="outline"
-                  className="text-purple-400 border-purple-400 hover:bg-purple-400 hover:text-white px-8 py-3 rounded-md"
-                  onClick={signIn}
-                >
-                  Login
-                </Button>
-              </div> */}
               <Card className="w-full bg-transparent text-white">
                 <CardHeader>
                   <CardTitle className="text-2xl font-bold">
@@ -164,12 +149,12 @@ const Landing = () => {
           <Card className="bg-primary-800 border-gray-700">
             <CardHeader>
               <CardTitle className="text-2xl text-gray-200">
-                About CryptoSplit
+                About SplitterTab
               </CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-gray-300">
-                CryptoSplit is the ultimate solution for splitting expenses
+                SplitterTab is the ultimate solution for splitting expenses
                 using cryptocurrencies. Whether you're traveling with friends,
                 sharing a house, or managing group purchases, CryptoSplit makes
                 it easy to keep track of expenses and settle debts using your
@@ -215,7 +200,6 @@ const Landing = () => {
                       {feature.description}
                     </p>
                   </div>
-                  {/* <ChevronRight className="ml-auto text-purple-400" /> */}
                 </CardContent>
               </Card>
             </motion.div>
