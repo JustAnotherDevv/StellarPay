@@ -163,7 +163,7 @@ export default function Create() {
 
   return (
     <div className="space-y-8 px-4 py-4 mx-auto md:w-1/2">
-      <Card>
+      <Card className="bg-primary text-gray-200 border border-gray-700">
         <CardHeader>
           <CardTitle>Add Participants</CardTitle>
         </CardHeader>
@@ -174,13 +174,19 @@ export default function Create() {
               value={newParticipant}
               onChange={(e) => setNewParticipant(e.target.value)}
             />
-            <Button onClick={addParticipant}>Add</Button>
+            <Button
+              variant="outline"
+              className="mt-auto text-gray-800"
+              onClick={addParticipant}
+            >
+              Add
+            </Button>
           </div>
           <div className="mt-4 flex flex-wrap gap-2">
             {participants.map((participant) => (
               <div
                 key={participant.id}
-                className="bg-secondary text-secondary-foreground px-3 py-1 rounded-full text-sm"
+                className="bg-secondary text-secondary-foreground px-3 py-1 rounded-md text-sm"
               >
                 {participant.name}
               </div>
@@ -189,21 +195,72 @@ export default function Create() {
         </CardContent>
       </Card>
 
-      <Card>
+      <Card className="bg-primary text-gray-200 border border-gray-700">
         <CardHeader>
           <CardTitle>Expense Details</CardTitle>
         </CardHeader>
+
         <CardContent className="space-y-4">
           <RadioGroup
             defaultValue="manual"
             onValueChange={(value) => setSplitType(value)}
           >
             <div className="flex items-center space-x-2">
-              <RadioGroupItem value="manual" id="manual" />
+              <RadioGroupItem
+                value="manual"
+                id="manual"
+                className="
+              peer
+              h-4
+              w-4
+              shrink-0
+              rounded-full
+              border
+              border-primary
+              ring-offset-background
+              focus-visible:outline-none
+              focus-visible:ring-2
+              focus-visible:ring-ring
+              focus-visible:ring-offset-2
+              disabled:cursor-not-allowed
+              disabled:opacity-50
+              data-[state=checked]:bg-primary-foreground
+              data-[state=checked]:text-primary
+              dark:border-gray-400
+              dark:data-[state=checked]:bg-gray-300
+              dark:data-[state=checked]:border-gray-300
+              transition-colors
+              text-gray-200 bg-white
+            "
+              />
               <Label htmlFor="manual">Manual Split</Label>
             </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="even" id="even" />
+            <div className="flex items-center space-x-2 text-gray-200">
+              <RadioGroupItem
+                className="peer
+              h-4
+              w-4
+              shrink-0
+              rounded-full
+              border
+              border-primary
+              ring-offset-background
+              focus-visible:outline-none
+              focus-visible:ring-2
+              focus-visible:ring-ring
+              focus-visible:ring-offset-2
+              disabled:cursor-not-allowed
+              disabled:opacity-50
+              data-[state=checked]:bg-primary-foreground
+              data-[state=checked]:text-primary
+              dark:border-gray-400
+              dark:data-[state=checked]:bg-gray-300
+              dark:data-[state=checked]:border-gray-300
+              transition-colors
+              text-gray-200 bg-white"
+                value="even"
+                id="even"
+              />
               <Label htmlFor="even">Even Split</Label>
             </div>
           </RadioGroup>
@@ -294,6 +351,7 @@ export default function Create() {
               <Button
                 onClick={() => fileInputRef.current?.click()}
                 variant="outline"
+                className="text-gray-700"
               >
                 <Upload className="mr-2 h-4 w-4" /> Upload Image
               </Button>
@@ -321,7 +379,7 @@ export default function Create() {
               {expenses.map((expense) => (
                 <div
                   key={expense.id}
-                  className="flex justify-between items-center bg-secondary p-2 rounded"
+                  className="flex justify-between items-center bg-primary border border-700 p-2 rounded-md"
                 >
                   <span>
                     {expense.description} - ${expense.amount.toFixed(2)} (Paid
@@ -341,7 +399,10 @@ export default function Create() {
         )}
       </Card>
 
-      <Button onClick={splitExpenses} className="w-full">
+      <Button
+        onClick={splitExpenses}
+        className="w-full bg-gray-200 text-gray-700 hover:bg-gray-200 hover:text-gray-600"
+      >
         Split Expenses
       </Button>
     </div>

@@ -56,7 +56,7 @@ export default function Profile() {
     <div className="space-y-8 py-4 px-4 mx-auto md:w-1/2">
       <h2 className="text-3xl font-bold">Your Expense Groups</h2>
       {groups.map((group) => (
-        <Card key={group.id}>
+        <Card key={group.id} className="bg-primary text-gray-200">
           <CardHeader>
             <CardTitle>{group.name}</CardTitle>
           </CardHeader>
@@ -65,9 +65,9 @@ export default function Profile() {
               <span>Total Amount: ${group.totalAmount}</span>
               <span>Paid Amount: ${group.paidAmount}</span>
             </div>
-            <div className="w-full bg-secondary rounded-full h-2.5 dark:bg-secondary">
+            <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-200">
               <div
-                className="bg-primary h-2.5 rounded-full"
+                className="bg-blue-500 h-2.5 rounded-full"
                 style={{
                   width: `${(group.paidAmount / group.totalAmount) * 100}%`,
                 }}
