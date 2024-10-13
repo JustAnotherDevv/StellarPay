@@ -20,7 +20,8 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { motion, AnimatePresence } from "framer-motion";
-import { uploadImageToInfura } from "@/utils";
+// import { uploadImageToInfura } from "@/utils";
+import axios from 'axios';
 
 type Expense = {
   id: number;
@@ -52,6 +53,10 @@ export default function Create() {
   const [receiptImage, setReceiptImage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
+  const [ocrItems, setOcrItems] = useState<Array<{ description: string; amount: number }>>([]);
+  const [ocrTotalAmount, setOcrTotalAmount] = useState<number>(0);
+  const [ocrMerchantName, setOcrMerchantName] = useState<string>('');
+  const [ocrDate, setOcrDate] = useState<string>('');
 
   const addExpense = () => {
     if (newExpense.description && newExpense.amount > 0 && newExpense.paidBy) {
@@ -137,9 +142,9 @@ export default function Create() {
 
     Object.entries(balances).forEach(([person, balance]) => {
       if (balance > 0) {
-        messages.push(`${person} is owed ${balance.toFixed(2)}`);
+        messages.push(`${person} is owed £${balance.toFixed(2)}`);
       } else if (balance < 0) {
-        messages.push(`${person} owes ${Math.abs(balance).toFixed(2)}`);
+        messages.push(`${person} owes £${Math.abs(balance).toFixed(2)}`);
       }
     });
 
@@ -156,9 +161,7 @@ export default function Create() {
     });
   };
 
-  const handleImageUpload = async (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!event?.target?.files) return null;
     const file = event?.target?.files[0];
     if (file) {
@@ -168,15 +171,92 @@ export default function Create() {
           setReceiptImage(reader.result as string);
         };
         reader.readAsDataURL(file);
-
-        const ipfsHash = await uploadImageToInfura(file);
-        console.log("IPFS Hash:", ipfsHash);
-        setIpfsCid(ipfsHash);
-        console.log(ipfsCid);
+  
+        const formData = new FormData();
+        formData.append('api_key', 'TEST'); // Replace 'TEST' with your actual API key
+        formData.append('recognizer', 'auto');
+        formData.append('ref_no', `ocr_react_${Date.now()}`);
+        formData.append('file', file);
+  
+        const response = await axios.post('https://ocr.asprise.com/api/v1/receipt', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        });
+  
+        const ocrResult = response.data;
+        console.log("OCR Result:", ocrResult);
+  
+        processOcrResult(ocrResult);
+  
       } catch (error) {
         console.error("Upload failed:", error);
       }
     }
+  };
+
+  const processOcrResult = (ocrResult: any) => {
+    if (ocrResult && ocrResult.receipts && ocrResult.receipts.length > 0) {
+      const receipt = ocrResult.receipts[0];
+      
+      const items = receipt.items?.map((item: any) => ({
+        description: item.description || 'Unknown Item',
+        amount: parseFloat(item.amount) || 0
+      })) || [];
+      setOcrItems(items);
+      
+      const totalAmount = parseFloat(receipt.total) || 0;
+      setOcrTotalAmount(totalAmount);
+      setTotalAmount(totalAmount);
+      setOcrMerchantName(receipt.merchant_name || 'Unknown Merchant');
+      
+      setOcrDate(receipt.date || 'Unknown Date');
+      
+      const itemsTotal = items.reduce((sum, item) => sum + item.amount, 0);
+      const difference = Math.abs(totalAmount - itemsTotal);
+      
+      if (difference > 0.01) { // Allow for small rounding differences
+        toast({
+          title: "Receipt Discrepancy",
+          description: `There's a difference of ${difference.toFixed(2)} between items total and receipt total.`,
+          variant: "warning",
+        });
+      }
+      
+      displayOcrResults(items, totalAmount, itemsTotal);
+    }
+  };
+  
+  const displayOcrResults = (items: Array<{ description: string; amount: number }>, totalAmount: number, itemsTotal: number) => {
+    toast({
+      title: "Receipt Processed",
+      description: (
+        <div>
+          <p>Merchant: {ocrMerchantName.toString()}</p>
+          <p>Items: {items.length}</p>
+          <p>Items Total: £{itemsTotal.toFixed(2)}</p>
+          <p>Receipt Total: £{totalAmount.toFixed(2)}</p>
+          <button onClick={() => showDetailedResults(items)} className="mt-2 px-2 py-1 bg-blue-500 text-white rounded">
+            Show Details
+          </button>
+        </div>
+      ),
+      duration: 10000,
+    });
+  };
+  
+  const showDetailedResults = (items: Array<{ description: string; amount: number }>) => {
+    toast({
+      title: "Detailed Receipt Items",
+      description: (
+        <ul className="mt-2 space-y-1 max-h-60 overflow-y-auto">
+          {items.map((item, index) => (
+            <li key={index}>{item.description}: ${item.amount.toFixed(2)}</li>
+          ))}
+        </ul>
+      ),
+      duration: 15000,
+    });
   };
 
   return (
