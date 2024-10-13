@@ -158,21 +158,20 @@ const Navigation = ({ isMobile, activePage, setActivePage }) => {
         </div>
       </div>
       <div>
-        <Button
+        {/* <Button
           variant="outline"
           className="mt-auto w-full text-gray-800"
           onClick={handleConnect}
         >
-          <Wallet className="mr-2 h-4 w-4" />{" "}
+          <Wallet className="mr-2 h-4 w-4" />
           {stellarAddress == "" ? (
             <>Connect Wallet</>
           ) : (
             <>
-              {/* Disconnect */}
               {truncateStr(stellarAddress, 5)}
             </>
           )}
-        </Button>
+        </Button> */}
         <div className="flex mx-auto w-full justify-around mt-2 text-gray-600/80 text-md">
           Powered By Stellar
         </div>

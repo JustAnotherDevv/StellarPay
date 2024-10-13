@@ -10,6 +10,7 @@ import {
   CreditCard,
   Activity,
   Plus,
+  Wallet,
   ArrowRightLeft,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -17,8 +18,13 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { useStellarWallets } from "@/context/StellarWalletsContext";
 import { truncateStr } from "@/utils";
+import { useMediaQuery } from "react-responsive";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+const MotionCard = motion(Card);
+const MotionButton = motion(Button);
 
 const PaymentSplitterBanner = () => {
+  const isMobile = useMediaQuery({ maxWidth: 768 });
   const [userName, setUserName] = useState("");
   const [stellarAddress, setStellarAddress] = useState("");
   const stellarWalletsKit = useStellarWallets();
@@ -72,6 +78,27 @@ const PaymentSplitterBanner = () => {
     setTimeout(() => setUserName("Alex"), 1000);
   }, []);
 
+  const handleConnect = async () => {
+    try {
+      if (stellarAddress != "") {
+        stellarWalletsKit.disconnect();
+        setStellarAddress("");
+        return;
+      }
+      console.log(stellarWalletsKit);
+      await stellarWalletsKit.openModal({
+        onWalletSelected: async (option: ISupportedWallet) => {
+          stellarWalletsKit.setWallet(option.id);
+          const { address } = await stellarWalletsKit.getAddress();
+          console.log(address);
+          setStellarAddress(address);
+        },
+      });
+    } catch (error) {
+      console.error("Failed to connect wallet:", error);
+    }
+  };
+
   return (
     <div>
       <div className="min-h-screen text-gray-100 md:w-3/4 mx-auto">
@@ -120,6 +147,61 @@ const PaymentSplitterBanner = () => {
               Split expenses with friends, powered by crypto
             </motion.p>
           </div>
+        </div>
+        <div className="max-w-4xl mx-auto pt-8 w-full">
+          <motion.div
+            className="w-full"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+          >
+            <MotionCard
+              className="bg-primary text-gray-200 border border-gray-700 overflow-hidden"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+            >
+              <CardHeader className="pb-2">
+                <CardTitle className="text-2xl font-bold">
+                  User Profile
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0 md:space-x-4">
+                  <div className="flex items-center space-x-4">
+                    <Avatar className="h-20 w-20">
+                      <AvatarImage
+                        src="https://github.com/shadcn.png"
+                        alt="@shadcn"
+                      />
+                      <AvatarFallback>JD</AvatarFallback>
+                    </Avatar>
+                    <div>
+                      <h2 className="text-xl font-semibold">Jack Doe</h2>
+                      <p className="text-gray-400">@jack_doe</p>
+                    </div>
+                  </div>
+                  <div className="flex flex-col space-y-2 items-end">
+                    <div className="flex items-center space-x-2">
+                      <Users className="h-5 w-5 text-gray-400" />
+                      <span className="text-lg font-medium">5 Groups</span>
+                    </div>
+                    <Button
+                      variant="outline"
+                      className="w-full md:w-auto text-gray-800"
+                      onClick={handleConnect}
+                    >
+                      <Wallet className="mr-2 h-4 w-4" />
+                      {stellarAddress === ""
+                        ? "Connect Wallet"
+                        : truncateStr(stellarAddress, 5)}
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            </MotionCard>
+          </motion.div>
         </div>
 
         <div className="max-w-4xl mx-auto py-8">
