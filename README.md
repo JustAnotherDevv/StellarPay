@@ -47,6 +47,7 @@ graph TD
 
 ### Links
 
+- [Live Demo](https://splittertab.vercel.app/)
 - [Demo](https://www.youtube.com/watch?v=EyXrEwHLkoo)
 - [Pitch Deck](https://www.canva.com/design/DAGTabHuIc4/BDLopYPbazWElCHx-Q-Z7A/edit?utm_content=DAGTabHuIc4&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
 )
