@@ -4,7 +4,17 @@ import { WebAuthn } from "@darkedges/capacitor-native-webauthn";
 import { Buffer } from "buffer";
 import base64url from "base64url";
 import { Capacitor } from "@capacitor/core";
-import { Horizon, Keypair } from "@stellar/stellar-sdk";
+import {
+  Horizon,
+  Keypair,
+  xdr,
+  Address,
+  Operation,
+  TransactionBuilder,
+  Account,
+  scValToNative,
+  nativeToScVal,
+} from "@stellar/stellar-sdk";
 import { Share } from "@capacitor/share";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -17,6 +27,7 @@ import { handleDeploy } from "../lib/deploy";
 import { handleVoteBuild } from "../lib/vote_build";
 import { handleVoteSend } from "../lib/vote_send";
 import { getVotes } from "../lib/get_votes";
+import { contractRead } from "@/utils";
 
 if (typeof window !== "undefined") {
   window.Buffer = Buffer;
@@ -201,6 +212,35 @@ const SoroPass: React.FC = () => {
 
   const onVotes = useCallback(async () => {
     if (bundlerKey && deployee) {
+      console.log(
+        "deployee ",
+        deployee,
+        `\n`,
+        xdr.ScVal.scvAddress(
+          Address.fromString(
+            "GAIKTILDUD5TXL2FY5F4RAPDTTLUVKIOW3YA3WXKQM5RBEFLSUPZIMCE"
+          )
+        ),
+        `\n`,
+        xdr.ScVal.scvAddress(
+          // Address.fromString(
+          "GAIKTILDUD5TXL2FY5F4RAPDTTLUVKIOW3YA3WXKQM5RBEFLSUPZIMCE"
+          // ).toScAddress()
+        ),
+        `\n`,
+        xdr.ScVal.scvAddress(Address.fromString(deployee).toScAddress())
+      );
+
+      const formattedAddress = nativeToScVal(
+        "GAIKTILDUD5TXL2FY5F4RAPDTTLUVKIOW3YA3WXKQM5RBEFLSUPZIMCE",
+        { type: "address" }
+      );
+
+      const name = await contractRead(bundlerKey, "get_member", [
+        formattedAddress,
+      ]);
+      const decodedName = scValToNative(name.result?.retval!);
+      console.log("name ", name, " ", decodedName);
       const newVotes = await getVotes(bundlerKey, deployee);
       setVotes(newVotes);
       console.log("NewVote", newVotes);

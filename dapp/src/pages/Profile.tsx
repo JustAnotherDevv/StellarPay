@@ -65,14 +65,59 @@ export default function Profile() {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
-      <motion.h2
+      <div
+        className="relative h-40 bg-primary overflow-hidden rounded-md border border-gray-700"
+        style={{
+          position: "relative",
+          isolation: "isolate",
+        }}
+      >
+        <div
+          style={{
+            content: '""',
+            position: "absolute",
+            inset: 0,
+            backgroundImage: 'url("/bg-2.jpg")',
+            // backgroundSize: "100px",
+            // backgroundRepeat: "repeat",
+            opacity: 0.3,
+            zIndex: -1,
+          }}
+        />
+        <motion.div
+          className="absolute inset-0 bg-gray-800"
+          animate={{
+            backgroundPosition: ["0% 0%", "100% 100%"],
+            opacity: [0.2, 0.3],
+          }}
+        />
+        <div className="relative z-10 h-full flex flex-col justify-center items-center text-center p-6">
+          <motion.h1
+            className="text-4xl font-bold mb-2 text-gray-200"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            Your Expense Groups
+          </motion.h1>
+          <motion.p
+            className="text-xl text-gray-400"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            Where friends split bills and HODL together! 🚀💰
+          </motion.p>
+        </div>
+      </div>
+      {/* <motion.h2
         className="text-3xl font-bold"
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.2, duration: 0.5 }}
       >
         Your Expense Groups
-      </motion.h2>
+      </motion.h2> */}
       <AnimatePresence>
         {groups.map((group) => (
           <MotionCard
@@ -108,8 +153,8 @@ export default function Profile() {
               </div>
               {group.isCreator ? (
                 <MotionButton
-                  onClick={() =>
-                    handleWithdraw()
+                  onClick={
+                    () => handleWithdraw()
                     // group.id
                   }
                   className="mt-4 w-full text-gray-700"
